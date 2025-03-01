@@ -4,9 +4,7 @@ import { toast } from "react-toastify";
 import { Ticket, TicketPlus } from "lucide-react";
 import { AuthContext } from "../../context/AuthContext";
 import TicketItem from "../tickets/TicketItem";
-
-// API base URL
-const API_URL = "http://localhost:5000/api";
+import { API_URL } from "../../constants";
 
 interface Ticket {
   _id: string;

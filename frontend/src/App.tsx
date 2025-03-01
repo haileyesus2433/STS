@@ -1,16 +1,20 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import Login from './components/auth/Login';
-import Signup from './components/auth/Signup';
-import UserDashboard from './components/dashboard/UserDashboard';
-import AdminDashboard from './components/dashboard/AdminDashboard';
-import Navbar from './components/layout/Navbar';
-import { AuthProvider } from './context/AuthContext';
-import PrivateRoute from './components/routing/PrivateRoute';
-import AdminRoute from './components/routing/AdminRoute';
+import Login from "./components/auth/Login";
+import Signup from "./components/auth/Signup";
+import UserDashboard from "./components/dashboard/UserDashboard";
+import AdminDashboard from "./components/dashboard/AdminDashboard";
+import Navbar from "./components/layout/Navbar";
+import { AuthProvider } from "./context/AuthContext";
+import PrivateRoute from "./components/routing/PrivateRoute";
+import AdminRoute from "./components/routing/AdminRoute";
 
 function App() {
   return (
@@ -22,21 +26,21 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
-              <Route 
-                path="/dashboard" 
+              <Route
+                path="/dashboard"
                 element={
                   <PrivateRoute>
                     <UserDashboard />
                   </PrivateRoute>
-                } 
+                }
               />
-              <Route 
-                path="/admin" 
+              <Route
+                path="/admin"
                 element={
                   <AdminRoute>
                     <AdminDashboard />
                   </AdminRoute>
-                } 
+                }
               />
               <Route path="/" element={<Navigate to="/login" />} />
             </Routes>

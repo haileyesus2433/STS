@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Navigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { AuthContext } from '../../context/AuthContext';
-import { UserPlus } from 'lucide-react';
+import React, { Component } from "react";
+import { Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../context/AuthContext";
+import { UserPlus } from "lucide-react";
 
 interface SignupState {
   name: string;
@@ -15,54 +15,63 @@ interface SignupState {
 
 class Signup extends Component<{}, SignupState> {
   static contextType = AuthContext;
-  context!: React.ContextType<typeof AuthContext>;
+  declare context: React.ContextType<typeof AuthContext>;
 
   constructor(props: {}) {
     super(props);
     this.state = {
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      role: 'user',
-      redirectToDashboard: false
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      role: "user",
+      redirectToDashboard: false,
     };
   }
 
-  handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     this.setState({
       ...this.state,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const { name, email, password, confirmPassword, role } = this.state;
-    
+
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error("Passwords do not match");
       return;
     }
-    
+
     try {
       await this.context.signup(name, email, password, role);
       this.setState({ redirectToDashboard: true });
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Registration failed');
+      toast.error(error.response?.data?.message || "Registration failed");
     }
   };
 
   render() {
-    const { name, email, password, confirmPassword, role, redirectToDashboard } = this.state;
+    const {
+      name,
+      email,
+      password,
+      confirmPassword,
+      role,
+      redirectToDashboard,
+    } = this.state;
     const { isAuthenticated, user } = this.context;
-    
+
     // Redirect if logged in
     if (isAuthenticated && redirectToDashboard) {
-      return <Navigate to={user?.role === 'admin' ? '/admin' : '/dashboard'} />;
+      return <Navigate to={user?.role === "admin" ? "/admin" : "/dashboard"} />;
     }
-    
+
     return (
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
         <div className="bg-indigo-600 p-4 text-white text-center">
@@ -74,7 +83,10 @@ class Signup extends Component<{}, SignupState> {
         <div className="p-6">
           <form onSubmit={this.handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="name"
+              >
                 Name
               </label>
               <input
@@ -89,7 +101,10 @@ class Signup extends Component<{}, SignupState> {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="email"
+              >
                 Email
               </label>
               <input
@@ -104,7 +119,10 @@ class Signup extends Component<{}, SignupState> {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="password"
+              >
                 Password
               </label>
               <input
@@ -120,7 +138,10 @@ class Signup extends Component<{}, SignupState> {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="confirmPassword">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="confirmPassword"
+              >
                 Confirm Password
               </label>
               <input
@@ -136,7 +157,10 @@ class Signup extends Component<{}, SignupState> {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="role">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="role"
+              >
                 Role
               </label>
               <select
@@ -162,7 +186,13 @@ class Signup extends Component<{}, SignupState> {
           </form>
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-600">
-              Already have an account? <a href="/login" className="text-indigo-600 hover:text-indigo-800">Login</a>
+              Already have an account?{" "}
+              <a
+                href="/login"
+                className="text-indigo-600 hover:text-indigo-800"
+              >
+                Login
+              </a>
             </p>
           </div>
         </div>

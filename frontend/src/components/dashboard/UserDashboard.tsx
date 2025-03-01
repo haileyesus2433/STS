@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { Ticket, TicketPlus } from 'lucide-react';
-import { AuthContext } from '../../context/AuthContext';
-import TicketItem from '../tickets/TicketItem';
+import React, { Component } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { Ticket, TicketPlus } from "lucide-react";
+import { AuthContext } from "../../context/AuthContext";
+import TicketItem from "../tickets/TicketItem";
 
 // API base URL
-const API_URL = 'http://localhost:5000/api';
+const API_URL = "http://localhost:5000/api";
 
 interface Ticket {
   _id: string;
@@ -25,15 +25,15 @@ interface UserDashboardState {
 
 class UserDashboard extends Component<{}, UserDashboardState> {
   static contextType = AuthContext;
-  context!: React.ContextType<typeof AuthContext>;
+  declare context: React.ContextType<typeof AuthContext>;
 
   constructor(props: {}) {
     super(props);
     this.state = {
       tickets: [],
-      title: '',
-      description: '',
-      loading: true
+      title: "",
+      description: "",
+      loading: true,
     };
   }
 
@@ -46,42 +46,43 @@ class UserDashboard extends Component<{}, UserDashboardState> {
       const res = await axios.get(`${API_URL}/tickets`);
       this.setState({ tickets: res.data, loading: false });
     } catch (error) {
-      console.error('Error fetching tickets:', error);
-      toast.error('Failed to load tickets');
+      console.error("Error fetching tickets:", error);
+      toast.error("Failed to load tickets");
       this.setState({ loading: false });
     }
   };
 
-  handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     this.setState({
       ...this.state,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const { title, description } = this.state;
-    
+
     try {
       await axios.post(`${API_URL}/tickets`, {
         title,
-        description
+        description,
       });
-      
-      toast.success('Ticket created successfully');
-      this.setState({ title: '', description: '' });
+
+      toast.success("Ticket created successfully");
+      this.setState({ title: "", description: "" });
       this.fetchTickets();
     } catch (error) {
-      toast.error('Failed to create ticket');
+      toast.error("Failed to create ticket");
     }
   };
 
   render() {
     const { tickets, title, description, loading } = this.state;
-    const { user } = this.context;
-    
+
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg shadow-md p-6">
@@ -91,7 +92,10 @@ class UserDashboard extends Component<{}, UserDashboardState> {
           </h2>
           <form onSubmit={this.handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="title"
+              >
                 Title
               </label>
               <input
@@ -106,7 +110,10 @@ class UserDashboard extends Component<{}, UserDashboardState> {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="description"
+              >
                 Description
               </label>
               <textarea
@@ -128,21 +135,28 @@ class UserDashboard extends Component<{}, UserDashboardState> {
             </button>
           </form>
         </div>
-        
+
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold mb-4 flex items-center text-indigo-600">
             <Ticket className="mr-2" size={24} />
             My Tickets
           </h2>
-          
+
           {loading ? (
             <p className="text-center py-4">Loading tickets...</p>
           ) : tickets.length === 0 ? (
-            <p className="text-center py-4 text-gray-500">No tickets found. Create your first ticket!</p>
+            <p className="text-center py-4 text-gray-500">
+              No tickets found. Create your first ticket!
+            </p>
           ) : (
             <div className="space-y-4">
-              {tickets.map(ticket => (
-                <TicketItem key={ticket._id} ticket={ticket} isAdmin={false} onStatusChange={() => {}} />
+              {tickets.map((ticket) => (
+                <TicketItem
+                  key={ticket._id}
+                  ticket={ticket}
+                  isAdmin={false}
+                  onStatusChange={() => {}}
+                />
               ))}
             </div>
           )}

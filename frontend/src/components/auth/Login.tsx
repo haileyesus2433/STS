@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Navigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { AuthContext } from '../../context/AuthContext';
-import { LogIn } from 'lucide-react';
+import React, { Component } from "react";
+import { Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../context/AuthContext";
+import { LogIn } from "lucide-react";
 
 interface LoginState {
   email: string;
@@ -12,46 +12,46 @@ interface LoginState {
 
 class Login extends Component<{}, LoginState> {
   static contextType = AuthContext;
-  context!: React.ContextType<typeof AuthContext>;
+  declare context: React.ContextType<typeof AuthContext>;
 
   constructor(props: {}) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
-      redirectToDashboard: false
+      email: "",
+      password: "",
+      redirectToDashboard: false,
     };
   }
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       ...this.state,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const { email, password } = this.state;
-    
+
     try {
       await this.context.login(email, password);
       this.setState({ redirectToDashboard: true });
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Login failed');
+      toast.error(error.response?.data?.message || "Login failed");
     }
   };
 
   render() {
     const { email, password, redirectToDashboard } = this.state;
     const { isAuthenticated, user } = this.context;
-    
+
     // Redirect if logged in
     if (isAuthenticated && redirectToDashboard) {
-      return <Navigate to={user?.role === 'admin' ? '/admin' : '/dashboard'} />;
+      return <Navigate to={user?.role === "admin" ? "/admin" : "/dashboard"} />;
     }
-    
+
     return (
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
         <div className="bg-indigo-600 p-4 text-white text-center">
@@ -63,7 +63,10 @@ class Login extends Component<{}, LoginState> {
         <div className="p-6">
           <form onSubmit={this.handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="email"
+              >
                 Email
               </label>
               <input
@@ -78,7 +81,10 @@ class Login extends Component<{}, LoginState> {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="password"
+              >
                 Password
               </label>
               <input
@@ -103,7 +109,13 @@ class Login extends Component<{}, LoginState> {
           </form>
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account? <a href="/signup" className="text-indigo-600 hover:text-indigo-800">Sign up</a>
+              Don't have an account?{" "}
+              <a
+                href="/signup"
+                className="text-indigo-600 hover:text-indigo-800"
+              >
+                Sign up
+              </a>
             </p>
           </div>
         </div>

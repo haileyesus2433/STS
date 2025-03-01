@@ -12,7 +12,14 @@ const PORT = process.env.PORT || 5000;
 
 
 app.use(express.json());
-app.use(cors());
+
+
+app.use(cors({
+  origin: ['https://status-tracking.netlify.app', 'http://localhost:5173'], // Add your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+  
+}));
 
 
 app.use('/api/auth', authRoutes);
